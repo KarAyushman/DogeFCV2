@@ -20,9 +20,9 @@ const int PY1 = 21;
 // =============================================
 
 int16_t launchState = 0, pyroState = 0, landState = 0, abortState = 0;
-int16_t launchAtt = 0, abortAtt = 0, landAtt = 0, launchTime = 0, launchAlt = 0;
+int16_t launchAtt = 0, abortAtt = 0, landAtt = 0, launchAlt = 0;
 int16_t landprev = 0, buzzDel = 0, buzzState = 0, buzzer = 0, armed = 0;
-double prevBuzzTime = 0.00;
+double prevBuzzTime = 0.00, launchTime = 0.0;
 
 // =============================================
 // ===              MPU6050                  ===
@@ -235,20 +235,20 @@ void launchDet(){
 }
 
 void apDet(){
-  if (lastAlt - alt >= 1 && launchState == 1 && pyroState == 0 && millis() - launchTime >= 4000) {
+  if (lastAlt - alt >= 0.5 && launchState == 1 && pyroState == 0 && millis() - launchTime >= 3000) {
     delay(200);
     getAlt();
     Write();
     // Serial.println(F("P1"));
 
-    if (lastAlt - alt >= 1) {
+    if (lastAlt - alt >= 0.5) {
 
       delay(200);
       getAlt();
       Write();
       // Serial.println(F("P2"));
 
-      if(lastAlt - alt >= 1) {
+      if(lastAlt - alt >= 0.5) {
         analogWrite(B_LED, 0);
         digitalWrite(R_LED, 255);
         digitalWrite(G_LED, 0);
